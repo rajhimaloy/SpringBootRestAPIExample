@@ -1,0 +1,44 @@
+version: '3.8'
+
+networks:
+  micro-app-net:
+    name: my-micro-app-net
+    driver: bridge
+
+volumes:
+  jenkins_home:
+  jenkins_docker_certs:
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+    privileged: true
+    user: root
+    ports:
+      - "8181:8181"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Allows Jenkins to communicate with Docker
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    networks:
+      - micro-app-net
+
+  jenkins-docker:
+    image: docker:dind
+    container_name: jenkins-docker
+    privileged: true
+    restart: unless-stopped
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - jenkins_docker_certs:/certs/client
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - micro-app-net
+
+#end of scripts
+# docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.erp</groupId>
 	<artifactId>SpringBootRestAPIExample</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0.0</version>
 	<name>SpringBootRestAPIExample</name>
 	<description>Student service for Spring Boot Rest API</description>
 	<url/>
