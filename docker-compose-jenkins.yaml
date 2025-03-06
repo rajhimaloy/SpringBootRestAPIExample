@@ -36,14 +36,16 @@ services:
     privileged: true
     restart: unless-stopped
     environment:
-      - DOCKER_TLS_CERTDIR=/certs
-    volumes:
-      - jenkins_docker_certs:/certs/client
-      - jenkins_home:/var/jenkins_home
+      #- DOCKER_TLS_CERTDIR=/certs
+      - DOCKER_TLS_CERTDIR=
+    #volumes:
+    #  - jenkins_docker_certs:/certs/client
+    #  - jenkins_home:/var/jenkins_home
+    ports:
+      - "2375:2375"
     networks:
       #- my-micro-app-net
       - micro-app-net
-
 
 #end of scripts
 # docker-compose -f docker-compose-jenkins.yaml up -d
@@ -86,4 +88,13 @@ services:
   # chown root:docker /var/run/docker.sock
   # chmod 777 /var/run/docker.sock
   # exit
+  # docker restart jenkins-container
+  # docker ps --format "table {{.Names}}\t{{.Status}}"
+  # docker start jenkins-docker-container
+  # docker exec -it jenkins-docker-container sh
+  # Inside the container, check if the Docker daemon is running:
+  # docker version
+  # If you see an error, manually start the daemon:
+  # dockerd &
+  # docker restart jenkins-docker-container
   # docker restart jenkins-container
