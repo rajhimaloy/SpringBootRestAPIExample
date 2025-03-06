@@ -1,6 +1,8 @@
 version: '3.8'
 
 networks:
+  #my-micro-app-net:
+    #external: true
   micro-app-net:
     name: my-micro-app-net
     driver: bridge
@@ -12,24 +14,25 @@ volumes:
 services:
   jenkins:
     image: jenkins/jenkins:lts
-    container_name: jenkins
+    container_name: jenkins-container
     restart: unless-stopped
     privileged: true
     user: root
     ports:
-      - "8181:8181"
+      - "8181:8080"  # Corrected port mapping
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # Allows Jenkins to communicate with Docker
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false #To start in an unlocked state, means no need login
     networks:
+      #- my-micro-app-net
       - micro-app-net
 
   jenkins-docker:
     image: docker:dind
-    container_name: jenkins-docker
+    container_name: jenkins-docker-container
     privileged: true
     restart: unless-stopped
     environment:
@@ -38,7 +41,39 @@ services:
       - jenkins_docker_certs:/certs/client
       - jenkins_home:/var/jenkins_home
     networks:
+      #- my-micro-app-net
       - micro-app-net
 
+
 #end of scripts
-# docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+# docker-compose -f docker-compose-jenkins.yaml up -d
+# docker ps
+# docker exec jenkins-container cat /var/jenkins_home/secrets/initialAdminPassword  #If Djenkins.install.runSetupWizard=true
+# Also can change the security setting from here:- /var/jenkins_home/config.xml
+  # docker exec -it jenkins-container bash
+  # cat /var/jenkins_home/config.xml
+  # nano /var/jenkins_home/config.xml
+  # <useSecurity>true</useSecurity>
+  # <user>
+  #  <fullName>admin</fullName>
+  #  <passwordHash>#jbcrypt:$2a$10$7EqJtq98hPqEX7fNZaFWoO/</passwordHash>
+  #</user>
+  # docker restart jenkins-container
+  # Username/Password: admin/admin
+# curl http://localhost:8080/student
+# Or open http://localhost:8080/student in a browser.
+
+# Troubleshoot
+# docker ps -a
+# docker network create my-micro-app-net
+# docker-compose -f docker-compose-jenkins.yaml down
+# docker volume rm jenkins_home jenkins_docker_certs  #If Djenkins.install.runSetupWizard=true
+# docker-compose -f docker-compose-jenkins.yaml up -d
+# docker exec jenkins-container cat /var/jenkins_home/secrets/initialAdminPassword  #If Djenkins.install.runSetupWizard=true
+# docker logs jenkins-container
+
+# Jenkins is working, continue with:
+  # Install Plugins: Manage Jenkins → Plugin Manager
+  # Create a new Pipeline Job
+  # Connect to GitHub
+  # Run your Jenkinsfile Pipeline

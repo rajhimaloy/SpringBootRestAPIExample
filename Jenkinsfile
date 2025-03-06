@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "myrepo/SpringBootRestAPIExample:latest"
+        DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
     }
 
     stages {
@@ -34,9 +34,10 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                sh "docker login -u your_dockerhub_username -p your_password"
-                sh "docker tag $DOCKER_IMAGE your_dockerhub_username/SpringBootRestAPIExample:latest"
-                sh "docker push your_dockerhub_username/SpringBootRestAPIExample:latest"
+                withDockerRegistry([credentialsId: 'docker-hub', url: '']) {
+                    sh "docker tag $DOCKER_IMAGE engrajibkumerghosh/springbootrestapiexample:latest"
+                    sh "docker push engrajibkumerghosh/springbootrestapiexample:latest"
+                }
             }
         }
     }
