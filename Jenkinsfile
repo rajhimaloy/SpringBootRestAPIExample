@@ -6,9 +6,9 @@ pipeline {
     } */
     agent any
 
-    tools {
+    /* tools {
         maven 'Maven'
-    }
+    } */
 
     environment {
         //DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
