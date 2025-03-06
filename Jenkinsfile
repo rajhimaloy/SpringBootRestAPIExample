@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/rajhimaloy/SpringBootRestAPIExample.git'
+                git branch: 'main', url: 'https://github.com/rajhimaloy/SpringBootRestAPIExample.git'
             }
         }
 
@@ -34,10 +34,9 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry([credentialsId: 'docker-hub', url: '']) {
-                    sh "docker tag $DOCKER_IMAGE engrajibkumerghosh/springbootrestapiexample:latest"
-                    sh "docker push engrajibkumerghosh/springbootrestapiexample:latest"
-                }
+                sh "docker login -u engrajibkumerghosh -p Hema@2020"
+                sh "docker tag $DOCKER_IMAGE engrajibkumerghosh/SpringBootRestAPIExample:latest"
+                sh "docker push engrajibkumerghosh/SpringBootRestAPIExample:latest"
             }
         }
     }
