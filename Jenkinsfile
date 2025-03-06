@@ -6,6 +6,10 @@ pipeline {
     } */
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     environment {
         //DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
         DOCKER_HOST = "tcp://jenkins-docker-container:2375"
@@ -20,7 +24,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                //sh 'mvn clean package'
+                sh 'docker run --rm -v "$PWD":/app -w /app maven:3.9.9 mvn clean package'
             }
         }
 

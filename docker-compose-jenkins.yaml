@@ -43,6 +43,7 @@ services:
       - micro-app-net
 
 #end of scripts
+# docker-compose -f docker-compose-jenkins.yaml down
 # docker-compose -f docker-compose-jenkins.yaml up -d
 # docker ps
 # docker exec jenkins-container cat /var/jenkins_home/secrets/initialAdminPassword  #If Djenkins.install.runSetupWizard=true
@@ -93,3 +94,6 @@ services:
   # dockerd &
   # docker restart jenkins-docker-container
   # docker restart jenkins-container
+  # docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+  # docker exec -it jenkins-container bash -c "apt update && apt install -y maven"
+  # docker exec -it jenkins-container mvn -version
