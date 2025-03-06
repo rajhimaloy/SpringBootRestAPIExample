@@ -1,12 +1,14 @@
 pipeline {
-    agent {
+    /* agent {
             docker {
                 image 'maven:3.9.9'  // Use Maven Docker image
             }
-    }
+    } */
+    agent any
 
     environment {
-        DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
+        //DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
+        DOCKER_HOST = "tcp://jenkins-docker-container:2375"
     }
 
     stages {
@@ -24,7 +26,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t $DOCKER_IMAGE ."
+                //sh "docker build -t $DOCKER_IMAGE ."
+                sh 'docker build -t engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0 .'
             }
         }
 
