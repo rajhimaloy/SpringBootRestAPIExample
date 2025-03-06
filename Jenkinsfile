@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+            docker {
+                image 'maven:3.9.9'  // Use Maven Docker image
+            }
+    }
 
     environment {
         DOCKER_IMAGE = "engrajibkumerghosh/springbootrestapiexample:SpringBootRestAPIExample-v1.0.0"
