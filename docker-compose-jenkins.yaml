@@ -36,15 +36,10 @@ services:
     privileged: true
     restart: unless-stopped
     environment:
-      #- DOCKER_TLS_CERTDIR=/certs
-      - DOCKER_TLS_CERTDIR=
-    #volumes:
-    #  - jenkins_docker_certs:/certs/client
-    #  - jenkins_home:/var/jenkins_home
+      - DOCKER_TLS_CERTDIR=   # Disable TLS (fixes connection issue)
     ports:
-      - "2375:2375"
+      - "2375:2375"  # Explicitly expose Docker API
     networks:
-      #- my-micro-app-net
       - micro-app-net
 
 #end of scripts
