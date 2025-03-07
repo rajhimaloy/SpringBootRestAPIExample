@@ -1,10 +1,10 @@
 pipeline {
-    /* agent {
+    agent {
             docker {
                 image 'maven:3.9.9'  // Use Maven Docker image
             }
-    } */
-    agent any
+    }
+    //agent any
 
     /* tools {
         maven 'Maven'
